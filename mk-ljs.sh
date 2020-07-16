@@ -1,9 +1,9 @@
 #! bash
 echo MSYSTEM=$MSYSTEM
-echo MSYSTEM_CARCH=$arch
+echo MSYSTEM_CARCH=${MSYSTEM_CARCH}
 echo MINGW_PACKAGE_PREFIX=$MINGW_PACKAGE_PREFIX
 echo MINGW_PREFIX=$MINGW_PREFIX
-if [ "$MSYSTEM_CARCH" = "i686" ]; then
+if [ "${MSYSTEM_CARCH}" = "i686" ]; then
   arch=x86
 else
   arch=x86_64

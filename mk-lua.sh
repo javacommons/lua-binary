@@ -1,8 +1,14 @@
 #! bash
 echo MSYSTEM=$MSYSTEM
-echo MSYSTEM_CARCH=$MSYSTEM_CARCH
+echo MSYSTEM_CARCH=${MSYSTEM_CARCH}
 echo MINGW_PACKAGE_PREFIX=$MINGW_PACKAGE_PREFIX
 echo MINGW_PREFIX=$MINGW_PREFIX
+if [ "${MSYSTEM_CARCH}" = "i686" ]; then
+  arch=x86
+else
+  arch=x86_64
+fi
+echo arch=$arch
 rootdir=`pwd`
 echo rootdir=$rootdir
 sleep 3
@@ -16,25 +22,25 @@ pacman -S --needed --noconfirm $MINGW_PACKAGE_PREFIX-toolchain
 mkdir -p $rootdir/build
 cd $rootdir/build
 
-rm -rf lua-$MSYSTEM_CARCH
+rm -rf lua-$arch
 wget -nc http://www.lua.org/ftp/lua-5.3.5.tar.gz
 rm -rf lua-5.3.5
 tar xvf lua-5.3.5.tar.gz
-mv lua-5.3.5 lua-$MSYSTEM_CARCH
+mv lua-5.3.5 lua-$arch
 
-cd lua-$MSYSTEM_CARCH
+cd lua-$arch
 make generic
 
-mkdir -p $rootdir/bin-$MSYSTEM_CARCH
-mkdir -p $rootdir/lib/lua-$MSYSTEM_CARCH
-cd $rootdir/build/lua-$MSYSTEM_CARCH
-cd $rootdir/build/lua-$MSYSTEM_CARCH
+mkdir -p $rootdir/bin-$arch
+mkdir -p $rootdir/lib/lua-$arch
+cd $rootdir/build/lua-$arch
+cd $rootdir/build/lua-$arch
 cd src && install -p -m 0755 lua luac $MINGW_PREFIX/bin
-cd $rootdir/build/lua-$MSYSTEM_CARCH
-cd src && install -p -m 0755 lua luac $rootdir/bin-$MSYSTEM_CARCH
-cd $rootdir/build/lua-$MSYSTEM_CARCH
-cd src && install -p -m 0644 lua.h luaconf.h lualib.h lauxlib.h lua.hpp $rootdir/lib/lua-$MSYSTEM_CARCH
-cd $rootdir/build/lua-$MSYSTEM_CARCH
-cd src && install -p -m 0644 liblua.a $rootdir/lib/lua-$MSYSTEM_CARCH
+cd $rootdir/build/lua-$arch
+cd src && install -p -m 0755 lua luac $rootdir/bin-$arch
+cd $rootdir/build/lua-$arch
+cd src && install -p -m 0644 lua.h luaconf.h lualib.h lauxlib.h lua.hpp $rootdir/lib/lua-$arch
+cd $rootdir/build/lua-$arch
+cd src && install -p -m 0644 liblua.a $rootdir/lib/lua-$arch
 
 cd $rootdir
